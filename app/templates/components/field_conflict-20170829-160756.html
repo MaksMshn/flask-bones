@@ -2,17 +2,14 @@
     {% with errors = field.errors %}
         <div class="form-group {{ ' is-invalid' if errors }}">
             {{ field.label(class="control-label") }}
-            
+            {{ field(class="form-control", **kwargs)|safe }}
+            <div class="invalid-feedback">
             {% if errors %}
-                {{ field(class="form-control is-invalid", **kwargs)|safe }}
-                <div class="invalid-feedback">
                 {% for error in errors %}
                     <div>{{ error }}</div>
                 {% endfor %}
-                </div>
-            {% else %}
-                 {{ field(class="form-control", **kwargs)|safe }}
             {% endif %}
+            </div>
         </div>
     {% endwith %}
 {% endmacro %}

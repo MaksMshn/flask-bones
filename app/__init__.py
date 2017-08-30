@@ -1,8 +1,6 @@
 from flask import Flask, g, render_template, request
 from app.database import db
-from app.extensions import (
-    lm, api, travis, mail, heroku, bcrypt, celery, babel
-)
+from app.extensions import lm, mail, bcrypt, babel
 from app.assets import assets
 import app.utils as utils
 from app import config
@@ -38,14 +36,10 @@ def create_app(config=config.base_config):
 
 
 def register_extensions(app):
-    heroku.init_app(app)
-    travis.init_app(app)
     db.init_app(app)
-    api.init_app(app)
     lm.init_app(app)
     mail.init_app(app)
     bcrypt.init_app(app)
-    celery.config_from_object(app.config)
     assets.init_app(app)
     babel.init_app(app)
 

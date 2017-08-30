@@ -1,31 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="ie ie6 ie-lt10 ie-lt9 ie-lt8 ie-lt7 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 ie-lt10 ie-lt9 ie-lt8 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 ie-lt10 ie-lt9 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 ie-lt10 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
 <head>
+
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--
+		HTML5 Reset: https://github.com/murtaugh/HTML5-Reset
+		Free to use
+    -->
+
+    <!-- Always force latest IE rendering engine (even in intranet) -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Important stuff for SEO, don't neglect. (And don't dupicate values across your site!) -->
     <title>{% block title -%}{%- endblock %}</title>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    {% assets "js_all" -%}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {%- endassets %}
+    <meta name="author" content="" />
+    <meta name="description" content="" />
+
+    <!--  Mobile Viewport
+	http://j.mp/mobileviewport & http://davidbcalhoun.com/2010/viewport-metatag
+	device-width : Occupy full width of the screen in its current orientation
+	initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+	maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width (wrong for most sites)
+	-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Modernizr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha256-0rguYS0qgS6L4qVzANq4kjxPLtvnp5nn2nB5G1lWRv4="
+        crossorigin="anonymous"></script>
+    <!-- Font awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+
     {% assets "css_all" -%}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
     {%- endassets %}
+
 </head>
 <body>
     {% include 'components/menu.html' %}
+
     <div class="container">
         {% include 'components/flash.html' %}
         {% block header -%}{%- endblock %}
         {% block body -%}{%- endblock %}
         {% block footer -%}{%- endblock %}
-        <hr />
-        <ul class="list-inline text-center">
-            <li><a href="">{% trans %}Terms{% endtrans %} }}</a></li>
-            <li><a href="">{% trans %}Privacy{% endtrans %}</a></li>
-            <li><a href="">{% trans %}Security{% endtrans%}</a></li>
-            <li><span class="text-muted"><i class="icon-time"></i> {{ g.request_time() }}</span></li>
-        </ul>
     </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">Place sticky footer content here</span>
+        </div>
+    </footer>
+    <!-- Scripts -->
+    {% assets "js_post" -%}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {%- endassets %}
+
 </body>
 </html>

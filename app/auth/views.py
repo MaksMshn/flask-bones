@@ -2,14 +2,28 @@ from flask import (
     current_app, request, redirect, url_for, render_template, flash, abort,
 )
 from flask_babel import gettext
+from flask_mail import Message
 from flask_login import login_user, login_required, logout_user
 from itsdangerous import URLSafeSerializer, BadSignature
-from app.extensions import lm
-from app.tasks import send_registration_email
+from app.extensions import lm, mail
+from app.utils import run_as_thread
 from app.user.models import User
 from app.user.forms import RegisterUserForm
 from .forms import LoginForm
 from ..auth import auth
+
+
+@run_as_thread
+def send_registration_email(user, token):
+    """
+    Send a registration email to a user.
+    """
+    msg = Message(
+        'User Registration',
+        sender='admin@flask-bones.com',
+        recipients=[user.email])
+    msg.body = render_template('mail/registration.mail', user=user, token=token)
+    mail.send(msg)
 
 
 @lm.user_loader
@@ -57,7 +71,7 @@ def register():
         s = URLSafeSerializer(current_app.secret_key)
         token = s.dumps(user.id)
 
-        send_registration_email.delay(user, token)
+        send_registration_email(user, token)
 
         flash(
             gettext(

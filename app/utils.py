@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import flash, request, url_for
+from threading import Thread
 
 
 def flash_errors(form, category='danger'):
@@ -17,13 +18,24 @@ def url_for_other_page(remove_args=[], **kwargs):
     for key in remove_args:
         if key in args.keys():
             args.pop(key)
-    new_args = [x for x in kwargs.iteritems()]
+    new_args = [x for x in kwargs.items()]
     for key, value in new_args:
         args[key] = value
     return url_for(request.endpoint, **args)
 
 
-def timeago(time=False):
+#https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xi-email-support
+def run_as_thread(f):
+    """Async decorator"""
+
+    def wrapper(*args, **kwargs):
+        thr = Thread(target=f, args=args, kwargs=kwargs)
+        thr.start()
+
+    return wrapper
+
+
+def timeago(time):
     """
     Get a datetime object or a int() Epoch timestamp and return a pretty string
     like 'an hour ago', 'Yesterday', '3 months ago', 'just now', etc

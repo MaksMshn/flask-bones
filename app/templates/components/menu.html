@@ -1,36 +1,50 @@
-{% set nav = [
+{% set nav_links = [
     ('Users', 'user.list'),
 ] %}
 
-<div class="navbar navbar-default navbar-fixed-top">
+
+
+<nav class="navbar navbar-expand-md fixed-top navbar-light bg-light">
+
     <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url_for('index') }}">{{ config.SITE_NAME }}</a>
-        </div>
-        <div class="navbar-collapse collapse">
+
+        <a class="navbar-brand" href="{{ url_for('index') }}">{{ config.SITE_NAME }}</a>
+
+        <button class="navbar-toggler" type="button" 
+            data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
             {% if current_user.is_admin -%}
-                <ul class="nav navbar-nav">
-                    {% for title, endpoint in nav %}
+                <ul class="navbar-nav">
+                    {% for title, endpoint in nav_links %}
                         {% if endpoint == request.endpoint %}
-                            <li class="active"><a href="{{ url_for(endpoint) }}">{{ title|title }}</a></li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ url_for(endpoint) }}">{{ title|title }}</a>
+                            </li>
                         {% else %}
-                            <li><a href="{{ url_for(endpoint) }}">{{ title|title }}</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for(endpoint) }}">{{ title|title }}</a>
+                            </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
             {%- endif %}
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="navbar-nav ml-auto">
                 {% if current_user.is_authenticated -%}
-                    <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+                    </li>
                 {% else %}
-                    <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+                    </li>
                 {%- endif %}
             </ul>
         </div>
+
     </div>
-</div>
+
+</nav>
