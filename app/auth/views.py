@@ -13,7 +13,7 @@ from .forms import LoginForm
 from ..auth import auth
 
 
-@run_as_thread
+#@run_as_thread
 def send_registration_email(user, token):
     """
     Send a registration email to a user.
@@ -23,6 +23,9 @@ def send_registration_email(user, token):
         sender='admin@flask-bones.com',
         recipients=[user.email])
     msg.body = render_template('mail/registration.mail', user=user, token=token)
+    # we need to provide app context for the separate thread
+    # with current_app.app_context() as ctx:
+    #     mail.send(msg)
     mail.send(msg)
 
 
@@ -38,12 +41,8 @@ def login():
         login_user(form.user)
         flash(
             gettext(
-                'You were logged in as {username}'.format(
-                    username=form.user.username
-                ),
-            ),
-            'success'
-        )
+                'You were logged in as {email}'.format(email=form.user.email),),
+            'success')
         return redirect(request.args.get('next') or url_for('index'))
     return render_template('login.html', form=form)
 
@@ -62,7 +61,6 @@ def register():
     if form.validate_on_submit():
 
         user = User.create(
-            username=form.data['username'],
             email=form.data['email'],
             password=form.data['password'],
             remote_addr=request.remote_addr,
@@ -102,10 +100,6 @@ def verify(token):
 
         flash(
             gettext(
-                'Registered user {username}. Please login to continue.'.format(
-                    username=user.username
-                ),
-            ),
-            'success'
-        )
+                'Registered user {email}. Please login to continue.'.format(
+                    email=user.email),), 'success')
         return redirect(url_for('auth.login'))

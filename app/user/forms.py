@@ -6,9 +6,6 @@ from app.user.models import User
 
 
 class UserForm(Form):
-    username = TextField(
-        gettext('Username'), validators=[DataRequired(), Length(min=2, max=20)]
-    )
     email = TextField(
         gettext('Email'), validators=[Email(), DataRequired(), Length(max=128)]
     )
@@ -26,7 +23,7 @@ class RegisterUserForm(UserForm):
                 'confirm',
                 message=gettext('Passwords must match')
             ),
-            Length(min=6, max=20)
+            Length(min=6, max=100)
         ]
     )
     confirm = PasswordField(
@@ -43,11 +40,6 @@ class RegisterUserForm(UserForm):
     def validate(self):
         rv = Form.validate(self)
         if not rv:
-            return False
-
-        user = User.query.filter_by(username=self.username.data).first()
-        if user:
-            self.username.errors.append(gettext('Username already registered'))
             return False
 
         user = User.query.filter_by(email=self.email.data).first()
