@@ -1,4 +1,4 @@
-.PHONY: init clean celery assets server db
+.PHONY: init clean celery assets devserver db
 
 init:
 	pip install -r requirements.txt
@@ -10,10 +10,7 @@ celery:
 	python runcelery.py -A app.tasks worker
 
 assets:
-	cd app/static && bower install && cd ..
+	cd app/static && bower install && cd ../..
 
-server:
-	python manage.py runserver --host 0.0.0.0
-
-db:
-	python manage.py recreate_db
+devserver:
+	python manage.py run --host 0.0.0.0

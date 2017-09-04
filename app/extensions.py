@@ -15,3 +15,6 @@ assets = Environment()
 
 from flask_babel import Babel
 babel = Babel()
+
+from celery import Celery
+celery = Celery()
