@@ -30,6 +30,21 @@ def dropdb():
     db.drop_all()
 
 
+@cli.command()
+@click.option('--email', prompt="Enter admin email.")
+@click.option('--password', prompt=True, hide_input=True,
+              confirmation_prompt=True)
+def create_db_admin(email, password):
+    from app.user import models
+    app = create_app()
+    with app.app_context():
+        user = models.User.create(
+        email=email,
+        password=password,
+        remote_addr="localhost",
+        active=True,
+        is_admin=True)
+
 # Start script
 cli.add_command(MigrateCommand, "db")
 

@@ -1,4 +1,3 @@
-from flask import flash
 from flask_wtf import Form
 from flask_babel import gettext
 from wtforms import TextField, PasswordField, BooleanField

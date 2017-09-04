@@ -35,13 +35,14 @@ def run_as_thread(f):
     return wrapper
 
 
-def timeago(time):
+def timeago(time=False):
     """
-    Get a datetime object or a int() Epoch timestamp and return a pretty string
-    like 'an hour ago', 'Yesterday', '3 months ago', 'just now', etc
+    Get a datetime object or a int() Epoch timestamp and return a
+    pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+    'just now', etc
     """
-    now = datetime.now()
-    time = time.replace(tzinfo=None)
+    from datetime import datetime, timezone
+    now = datetime.now(timezone.utc)
     if type(time) is int:
         diff = now - datetime.fromtimestamp(time)
     elif isinstance(time, datetime):
@@ -58,21 +59,21 @@ def timeago(time):
         if second_diff < 10:
             return "just now"
         if second_diff < 60:
-            return str(second_diff) + " seconds ago"
+            return f"{second_diff:.2f} seconds ago"
         if second_diff < 120:
             return "a minute ago"
         if second_diff < 3600:
-            return str(second_diff / 60) + " minutes ago"
+            return f"{second_diff/60:.2f} minutes ago"
         if second_diff < 7200:
             return "an hour ago"
         if second_diff < 86400:
-            return str(second_diff / 3600) + " hours ago"
+            return f"{second_diff/3600:.2f} hours ago"
     if day_diff == 1:
         return "Yesterday"
     if day_diff < 7:
-        return str(day_diff) + " days ago"
+        return f"{day_diff} days ago"
     if day_diff < 31:
-        return str(day_diff/7) + " weeks ago"
+        return f"{day_diff/7:.2f} weeks ago"
     if day_diff < 365:
-        return str(day_diff/30) + " months ago"
-    return str(day_diff/365) + " years ago"
+        return f"{day_diff/30:.2f} months ago"
+    return f"{day_diff/365:.2f} years ago"

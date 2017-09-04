@@ -6,7 +6,6 @@ from flask_mail import Message
 from flask_login import login_user, login_required, logout_user
 from itsdangerous import URLSafeSerializer, BadSignature
 from app.extensions import lm, mail
-from app.utils import run_as_thread
 from app.user.models import User
 from app.user.forms import RegisterUserForm
 from .forms import LoginForm

@@ -18,9 +18,11 @@ def create_app(config=config.base_config):
     register_errorhandlers(app)
     register_jinja_env(app)
 
-    @babel.localeselector
-    def get_locale():
-        return request.accept_languages.best_match(config.SUPPORTED_LOCALES)
+    # register babel locale only if it hasn't been registered yet
+    if not babel.locale_selector_func:
+        @babel.localeselector
+        def get_locale():
+            return request.accept_languages.best_match(config.SUPPORTED_LOCALES)
 
     @app.before_request
     def before_request():
