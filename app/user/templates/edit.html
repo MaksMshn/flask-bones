@@ -22,7 +22,6 @@
             </div>
             <div class="panel-body">
                 {{ form.csrf_token }}
-                {{ render_field(form.username) }}
                 {{ render_field(form.email) }}
                 <div class="checkbox">
                     <label>
@@ -41,7 +40,7 @@
                 <button type="submit" class="btn btn-default"><i class="icon-save"></i> Save</button>
                 <a class="btn btn-default" href="{{ url_for('.list') }}"><i class="icon-remove"></i> Cancel</a>
                 {% if current_user.is_admin and not user == current_user %}
-                    {% set dialogue = 'Are you sure you want to delete %s?' % user.username %}
+                    {% set dialogue = 'Are you sure you want to delete %s?' % user.email %}
                     <a data-confirm data-dialogue="{{ dialogue }}" class="btn btn-default pull-right" href="{{ url_for('.delete', id=user.id) }}">
                         <i class="icon-trash"></i> Delete
                     </a>

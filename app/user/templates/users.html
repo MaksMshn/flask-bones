@@ -4,7 +4,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        {{ search('Search for a Username or Email') }}
+        {{ search('Search for an Email') }}
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -12,12 +12,11 @@
             <tbody>
                 {% for u in datatable.query.items %}
                     <tr>
-                        <td><a href="{{ url_for('.edit', id=u.id) }}">{{ u.username }}</a></td>
-                        <td>{{ u.email }}</td>
+                        <td><a href="{{ url_for('.edit', id=u.id) }}">{{ u.email }}</a></td>
                         <td>{{ timeago(u.created_ts) }}</td>
                         <td>{{ u.remote_addr }}</td>
                         <td>
-                            {% set dialogue = 'Are you sure you want to delete %s?' % u.username %}
+                            {% set dialogue = 'Are you sure you want to delete %s?' % u.email %}
                             <a data-confirm data-dialogue="{{ dialogue }}" class="btn btn-default btn-xs" href="{{ url_for('.delete', id=u.id) }}">
                                 <i class="icon-trash"></i>
                             </a>

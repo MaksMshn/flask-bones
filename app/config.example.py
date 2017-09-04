@@ -1,15 +1,23 @@
 class base_config(object):
     """Default configuration options."""
     SITE_NAME = 'Flask Bones'
-    SECRET_KEY = b'}B\xec\x01\xabO\x99\x80\x15s\xb2\xb32y\x05\xf8/Y\xf7A\x90\xea\\J'
+    SECRET_KEY = "very random string"
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql://flask_bones:flask_bones@kast76.utlib.ee:5432/flask_bones'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://DB_USER:SET_PASSWORD@localhost:5432/test'
 
     SUPPORTED_LOCALES = ['en']
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'yourGmail@gmail.com'
+    MAIL_PASSWORD = 'yourGmail password'
 
 
 class dev_config(base_config):
     """Development configuration options."""
+    FLASK_DEBUG = True
     DEBUG = True
     ASSETS_DEBUG = True
     SQLALCHEMY_ECHO = True

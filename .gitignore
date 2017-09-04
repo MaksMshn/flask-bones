@@ -3,7 +3,7 @@
 .coverage
 .env
 gen/
-config.py
+app/config.py
 .webassets-cache
 bower_components/
 node_modules/
@@ -11,3 +11,4 @@ node_modules/
 .vagrant/
 tmp/
 ubuntu-xenial-16.04-cloudimg-console.log
+app/config.py

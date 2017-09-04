@@ -15,8 +15,8 @@ def list():
     datatable = DataTable(
         model=User,
         columns=[User.remote_addr],
-        sortable=[User.username, User.email, User.created_ts],
-        searchable=[User.username, User.email],
+        sortable=[User.email, User.created_ts],
+        searchable=[User.email],
         filterable=[User.active],
         limits=[25, 50, 100],
         request=request
@@ -45,9 +45,7 @@ def edit(id):
         form.populate_obj(user)
         user.update()
         flash(
-            gettext('User {username} edited'.format(username=user.username)),
-            'success'
-        )
+            gettext('User {email} edited'.format(email=user.email)), 'success')
     return render_template('edit.html', form=form, user=user)
 
 
@@ -56,8 +54,5 @@ def edit(id):
 def delete(id):
     user = User.query.filter_by(id=id).first_or_404()
     user.delete()
-    flash(
-        gettext('User {username} deleted').format(username=user.username),
-        'success'
-    )
+    flash(gettext('User {email} deleted').format(email=user.email), 'success')
     return redirect(url_for('.list'))

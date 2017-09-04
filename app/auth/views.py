@@ -23,9 +23,6 @@ def send_registration_email(user, token):
         sender='admin@flask-bones.com',
         recipients=[user.email])
     msg.body = render_template('mail/registration.mail', user=user, token=token)
-    # we need to provide app context for the separate thread
-    # with current_app.app_context() as ctx:
-    #     mail.send(msg)
     mail.send(msg)
 
 

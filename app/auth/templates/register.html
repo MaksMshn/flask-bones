@@ -19,12 +19,7 @@
                 {{ render_field(form.email) }}
                 {{ render_field(form.password) }}
                 {{ render_field(form.confirm) }}
-                <div class="checkbox">
-                    <label>
-                        {{ form.accept_tos() }}
-                        {{ form.accept_tos.label.text }}
-                    </label>
-                </div>
+                {{ render_field(form.accept_tos) }}
             </div>
             <div class="panel-footer">
                 <button type="submit" class="btn btn-default">

@@ -1,18 +1,59 @@
-{% macro render_field(field) %}
+{% macro render_field(f) %}
+    {% if f.type == 'BooleanField' %}
+        {{ render_checkbox_field(f) }}
+    {% elif f.type == 'RadioField' %}
+        {{ render_radio_field(f) }}
+    {% else %}
+        {{ render_generic_field(f) }}
+    {% endif %}
+{% endmacro %}
+
+
+{% macro render_generic_field(field) %} 
     {% with errors = field.errors %}
-        <div class="form-group {{ ' is-invalid' if errors }}">
-            {{ field.label(class="control-label") }}
-            
-            {% if errors %}
-                {{ field(class="form-control is-invalid", **kwargs)|safe }}
+        <div class="form-group">
+            {{ field.label(class="control-label") }} 
+            {% if errors %} 
+                {{ field(class_="form-control is-invalid", **kwargs)|safe }}
                 <div class="invalid-feedback">
-                {% for error in errors %}
-                    <div>{{ error }}</div>
-                {% endfor %}
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
                 </div>
             {% else %}
-                 {{ field(class="form-control", **kwargs)|safe }}
+                {{ field(class_="form-control", **kwargs)|safe }} 
             {% endif %}
         </div>
-    {% endwith %}
-{% endmacro %}
+    {% endwith %} {% endmacro %}
+
+
+{% macro render_checkbox_field(field) -%}
+<label class="custom-control custom-checkbox">
+    {% set field_classes = "custom-control-input" %}
+    {% if field.errors %}
+        {% set field_classes = field_classes + " is-invalid" %}
+    {% endif %}
+    {{ field(type='checkbox', class_=field_classes, **kwargs) }}
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description">{{ field.label }}</span>
+</label>
+{%- endmacro %}
+
+{# Renders radio field
+    Params:
+        field - WTForm field (there are no check, but you should put here only BooleanField.
+        kwargs - pass any arguments you want in order to put them into the html attributes.
+        There are few exceptions: for - for_, class - class_, class__ - class_
+
+    Example usage:
+        {{ macros.render_radio_field(form.answers) }}
+ #}
+{% macro render_radio_field(field) -%}
+    {% for value, label, _ in field.iter_choices() %}
+        <div class="radio">
+            <label>
+                <input type="radio" name="{{ field.id }}" id="{{ field.id }}" value="{{ value }}">{{ label }}
+            </label>
+        </div>
+    {% endfor %}
+{%- endmacro %}
