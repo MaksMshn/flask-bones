@@ -1,4 +1,4 @@
-.PHONY: init clean celery assets devserver db
+.PHONY: init clean celery assets devserver db test
 
 init:
 	pip install -r requirements.txt
@@ -14,3 +14,5 @@ assets:
 
 devserver:
 	python manage.py run --host 0.0.0.0
+test:
+	python tests.py

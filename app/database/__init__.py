@@ -4,14 +4,13 @@ db = SQLAlchemy()
 
 def populate_db(num_users=5):
     """
-    Fills the database with fake data.
+    Fills the database with fake data. Used for testing.
     """
     from faker import Factory
     from app.user.models import User
 
     fake = Factory.create()
 
-    admin_username = 'cburmeister'
     admin_email = 'cburmeister@discogs.com'
     admin_password = 'test123'
 
@@ -19,7 +18,6 @@ def populate_db(num_users=5):
     for _ in range(int(num_users)):
         users.append(
             User(
-                fake.userName(),
                 fake.email(),
                 fake.word() + fake.word(),
                 fake.ipv4()
@@ -28,7 +26,6 @@ def populate_db(num_users=5):
 
     users.append(
         User(
-            admin_username,
             admin_email,
             admin_password,
             fake.ipv4(),

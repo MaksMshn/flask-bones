@@ -17,11 +17,13 @@ def cli():
     pass
 
 
-# Db commands
-@cli.command()
-def initdb():
-    """Initialize the database."""
-    db.create_all()
+# # Db commands
+
+# instead of using create_all, use alembic (manage.py db upgrade head)
+# @cli.command()
+# def initdb():
+#     """Initialize the database."""
+#     db.create_all()
 
 
 @cli.command()
@@ -34,7 +36,8 @@ def dropdb():
 @click.option('--email', prompt="Enter admin email.")
 @click.option('--password', prompt=True, hide_input=True,
               confirmation_prompt=True)
-def create_db_admin(email, password):
+def create_admin(email, password):
+    """ Create site administrator. """
     from app.user import models
     app = create_app()
     with app.app_context():
