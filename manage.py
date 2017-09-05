@@ -19,11 +19,10 @@ def cli():
 
 # # Db commands
 
-# instead of using create_all, use alembic (manage.py db upgrade head)
-# @cli.command()
-# def initdb():
-#     """Initialize the database."""
-#     db.create_all()
+@cli.command()
+def initdb():
+    """Initialize the database. The better way to do it is: "manage.py db upgrade head" """
+    db.create_all()
 
 
 @cli.command()

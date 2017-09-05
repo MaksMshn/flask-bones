@@ -1,4 +1,6 @@
+import os, time
 from flask import Flask, g, render_template, request
+
 from app.database import db
 from app.extensions import lm, mail, bcrypt, babel, celery
 from app.assets import assets
@@ -6,12 +8,15 @@ import app.utils as utils
 from app import config
 from app.user import user
 from app.auth import auth
-import time
 
 
 def create_app(config=config.base_config):
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        instance_relative_config=True,
+        instance_path=config.INSTANCE_CONFIG_DIR)
     app.config.from_object(config)
+    app.config.from_pyfile("flask_config.py", silent=True)
 
     register_extensions(app)
     register_blueprints(app)

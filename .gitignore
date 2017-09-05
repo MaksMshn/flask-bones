@@ -1,4 +1,5 @@
 *.pyc
+*.db
 .DS_Store
 .coverage
 .env
@@ -12,3 +13,4 @@ node_modules/
 tmp/
 ubuntu-xenial-16.04-cloudimg-console.log
 app/config.py
+config/flask_config.py
