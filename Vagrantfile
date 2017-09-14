@@ -38,6 +38,7 @@ Vagrant.configure("2") do |config|
     # By default stop and disable Nginx.
     service nginx stop
     update-rc.d nginx disable
+    rm /etc/nginx/sites-enabled/default
     # postgres
     su postgres -c "createuser -dRS $user"
     # anaconda

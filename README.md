@@ -67,6 +67,17 @@ flask-bones
 
     Head to http://localhost:5000 and login using admin account set up earlier.
 
+
+## Run production server
+
+Use nginx to serve static file and uwsgi as a container.
+
+    ```
+    $ sudo cp config/app /etc/nginx/sites-enabled
+    $ sudo rm /etc/nginx/sites-enabled/default
+    $ sudo service nginx restart
+    $ uwsgi --socket 0.0.0.0:5000 --protocol=http -w run_server
+    ```
     
 
 ## Features
