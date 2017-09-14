@@ -19,7 +19,7 @@ assets:
 	cd app/static && yarn install && cd ../..
 
 devserver:
-	python manage.py run --host 0.0.0.0 --port 5003
+	python manage.py run --host 0.0.0.0 --port 5000
 
 test:
 	python tests.py

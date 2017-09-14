@@ -31,6 +31,7 @@ dependencies:
   - blinker==1.4
   - celery==4.1.0
   - cffi==1.10.0
+  - cssmin==0.2.0
   - dnspython==1.15.0
   - email-validator==1.0.2
   - faker==0.8.3
@@ -43,6 +44,7 @@ dependencies:
   - flask-sqlalchemy==2.2
   - flask-wtf==0.14.2
   - idna==2.6
+  - jsmin==2.2.2
   - kombu==4.1.0
   - mako==1.0.7
   - psycopg2==2.7.3.1

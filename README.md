@@ -4,11 +4,26 @@ flask-bones
 
 ## Setup
 
+0. Setup environment 
+
+    Using vagrant:
+
+    ```
+    $ git clone https://github.com/MaksMshn/flask-bones
+    $ cd flask-bones
+    $ vagrant up
+    $ vagrant ssh
+    $ cd /vagrant
+    ```
+
+    Or by simply installing anaconda and yarn.
+
 
 1. Install Python packages:
 
     ```
     $ make init
+    $ source activate flask-bones
     ```
 
 2. Overwrite default parameters in config/flask_config.py
@@ -48,7 +63,13 @@ flask-bones
     $ make devserver
     ```
 
-# Features
+8. Check that the site is working
+
+    Head to http://localhost:5000 and login using admin account set up earlier.
+
+    
+
+## Features
 
 1. Version your database schema
 

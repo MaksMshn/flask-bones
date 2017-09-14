@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   # VirtualBox configuration.
   config.vm.provider "virtualbox" do |vb|
       # Set the name for the VM
-      vb.name = "MyProject"
+      vb.name = "MyProject2"
 
       # Use VBoxManage to customize the VM. For example to change memory:
       vb.customize ["modifyvm", :id, "--memory", "2048"]
@@ -26,9 +26,13 @@ Vagrant.configure("2") do |config|
   config.ssh.username = "ubuntu"
 
   config.vm.provision "shell", inline: <<-SHELL
+    # yarn
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+    # install packages
     user=ubuntu
     apt-get -qqy update
-    apt-get -qqy install build-essential zip unzip postgresql memcached nginx
+    apt-get -qqy install build-essential zip unzip postgresql memcached nginx yarn
     # https://coderwall.com/p/ztskha
     sed -i "s/sendfile on;/sendfile off;/" /etc/nginx/nginx.conf
     # By default stop and disable Nginx.
@@ -52,19 +56,6 @@ EOF
     else
       echo "ERROR: no anaconda installer found"
     fi
-    # redis
-    wget http://download.redis.io/redis-stable.tar.gz
-    tar xvzf redis-stable.tar.gz
-    cd redis-stable
-    make
-    make install
-    # user
-    su $user
-    createdb production
-    createdb test
-    source ~/.bashrc
-    cd /vagrant
-    conda env create -f environment.yml
     
     echo "Done installing your virtual machine!"
   SHELL
