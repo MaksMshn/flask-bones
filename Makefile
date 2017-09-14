@@ -1,7 +1,7 @@
-.PHONY: init clean celery assets devserver db test
+.PHONY: init clean celery assets devserver db test admin
 
 init:
-	pip install -r requirements.txt
+	conda env create -f=environment.yml
 
 clean:
 	find . -name '*.pyc' -delete
@@ -9,10 +9,18 @@ clean:
 celery:
 	python runcelery.py -A app.tasks worker
 
+db:
+	python manage.py db upgrade head
+
+admin:
+	python manage.py create_admin
+
 assets:
-	cd app/static && bower install && cd ../..
+	cd app/static && yarn install && cd ../..
 
 devserver:
-	python manage.py run --host 0.0.0.0
+	python manage.py run --host 0.0.0.0 --port 5003
+
 test:
 	python tests.py
+

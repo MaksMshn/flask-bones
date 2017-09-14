@@ -19,10 +19,10 @@ def cli():
 
 # # Db commands
 
-@cli.command()
-def initdb():
-    """Initialize the database. The better way to do it is: "manage.py db upgrade head" """
-    db.create_all()
+#@cli.command()
+#def initdb():
+#    """Initialize the database. The better way to do it is: "manage.py db upgrade head" """
+#    db.create_all()
 
 
 @cli.command()

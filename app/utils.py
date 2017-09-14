@@ -42,7 +42,8 @@ def timeago(time=False):
     'just now', etc
     """
     from datetime import datetime, timezone
-    now = datetime.now(timezone.utc)
+    #now = datetime.now(timezone.utc)
+    now = datetime.now()
     if type(time) is int:
         diff = now - datetime.fromtimestamp(time)
     elif isinstance(time, datetime):
@@ -77,3 +78,5 @@ def timeago(time=False):
     if day_diff < 365:
         return f"{day_diff/30:.2f} months ago"
     return f"{day_diff/365:.2f} years ago"
+
+
