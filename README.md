@@ -16,7 +16,7 @@ flask-bones
     $ cd /vagrant
     ```
 
-    Or by simply installing anaconda and yarn.
+    Or by simply installing anaconda, yarn, and redis (later only in case you need a task queue).
 
 
 1. Install Python packages:
@@ -76,6 +76,26 @@ Use nginx to serve static file and uwsgi as a container.
     $ sudo rm /etc/nginx/sites-enabled/default
     $ sudo service nginx restart
     $ uwsgi --socket 0.0.0.0:5000 --protocol=http -w run_server
+
+
+## Task queue
+
+If you need to use task queue define your task in a tasks.py, start celery server via
+
+    $ make celery
+
+and run your taks from the code. Note that redis has to be running for this to work.
+Here is a simple example of an asynchronous job:
+
+    from app.extensions import celery
+
+    # define a job
+    @celery.task                                                                     
+    def send_email(msg):                                                             
+        mail.send(msg) 
+
+    # queue job
+    send_email.delay(msg)
     
 
 ## Features

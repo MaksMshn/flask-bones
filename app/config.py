@@ -23,6 +23,8 @@ class base_config(object):
     MAIL_USERNAME = 'YOUR_GMAIL_ACCOUNT@gmail.com'
     MAIL_PASSWORD = 'YOUR_GMAIL_PASSWORD'
 
+    BROKER_URL = 'redis://localhost:6379'
+
 
 class dev_config(base_config):
     """Development configuration options."""

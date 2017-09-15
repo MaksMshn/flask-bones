@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
     # install packages
     user=ubuntu
     apt-get -qqy update
-    apt-get -qqy install build-essential zip unzip postgresql memcached nginx yarn
+    apt-get -qqy install build-essential zip unzip postgresql nginx yarn redis-server
     # https://coderwall.com/p/ztskha
     sed -i "s/sendfile on;/sendfile off;/" /etc/nginx/nginx.conf
     # By default stop and disable Nginx.
