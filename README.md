@@ -32,7 +32,7 @@ flask-bones
     SITE_NAME = 'My site name'
     SECRET_KEY = 'use os.urandom(20) to produce sth very random'
     SQLALCHEMY_DATABASE_URI = 'postgresql://USER:PASSWORD@localhost:5432/DBNAME'
-    # if you dont want to use dedicate email server you can
+    # if you dont want to use a dedicated email server you can
     # simply use an existing gmail account by setting
     MAIL_USERNAME = 'YOUR_GMAIL_ACCOUNT@gmail.com'
     MAIL_PASSWORD = 'YOUR_GMAIL_PASSWORD'
