@@ -1,4 +1,5 @@
 import os, time
+import logging
 from flask import Flask, g, render_template, request
 
 from app.database import db
@@ -39,6 +40,9 @@ def create_app(config=config.base_config):
     def index():
         return render_template('index.html')
 
+    logging.basicConfig(level=config.LOG_LEVEL, format=config.LOG_FORMAT)
+    logging.info("Initialized app")
+    
     return app
 
 

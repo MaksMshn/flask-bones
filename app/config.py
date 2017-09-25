@@ -1,4 +1,4 @@
-import os
+import os, logging
 
 
 class base_config(object):
@@ -24,6 +24,9 @@ class base_config(object):
     MAIL_PASSWORD = 'YOUR_GMAIL_PASSWORD'
 
     BROKER_URL = 'redis://localhost:6379'
+
+    LOG_LEVEL = logging.INFO
+    LOG_FORMAT = '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
 
 
 class dev_config(base_config):
