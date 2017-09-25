@@ -20,7 +20,7 @@
         There are few exceptions: for - for_, class - class_, class__ - class_
  #}
 {% macro display_errors(field) %}
-    {% set class="form-control " + kwargs.pop("class_") %}
+    {% set class="form-control " + kwargs.pop("class_", "") %}
     {% with errors = field.errors %}
         {% if errors %} 
             {{ field(class_="is-invalid" + class, **kwargs)|safe }}
