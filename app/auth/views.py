@@ -1,7 +1,7 @@
 from flask import (
     current_app, request, redirect, url_for, render_template, flash, abort,
 )
-from flask_babel import gettext
+from flask_babel import gettext as _
 from flask_mail import Message
 from flask_login import login_user, login_required, logout_user
 from itsdangerous import URLSafeSerializer, BadSignature
@@ -36,7 +36,7 @@ def login():
     if form.validate_on_submit():
         login_user(form.user)
         flash(
-            gettext(
+            _(
                 'You were logged in as {email}'.format(email=form.user.email),),
             'success')
         return redirect(request.args.get('next') or url_for('index'))
@@ -47,7 +47,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash(gettext('You were logged out'), 'success')
+    flash(_('You were logged out'), 'success')
     return redirect(url_for('.login'))
 
 
@@ -68,7 +68,7 @@ def register():
         send_registration_email(user, token)
 
         flash(
-            gettext(
+            _(
                 'Sent verification email to {email}'.format(
                     email=user.email
                 )
@@ -95,7 +95,7 @@ def verify(token):
         user.update()
 
         flash(
-            gettext(
+            _(
                 'Registered user {email}. Please login to continue.'.format(
                     email=user.email),), 'success')
         return redirect(url_for('auth.login'))

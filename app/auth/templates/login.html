@@ -1,7 +1,7 @@
 {% from 'components/field.html' import render_field %}
 {% extends "layout.html" %}
 
-{% block title %}{% trans %}Login{% endtrans %}{% endblock %}
+{% block title %}{{ _("Login") }}{% endblock %}
 
 {% block header %}
 {% endblock %}
@@ -19,10 +19,10 @@
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-success" style="margin-right: 1em;">
-                    <i class="fa fa-sign-in"></i> {% trans %} Login{% endtrans %}
+                    <i class="fa fa-sign-in"></i> {{ _("Login") }}
                 </button>
-                <span style="margin-right: 1em">{% trans %}or{% endtrans %}</span>
-                <a class="btn btn-secondary" href="{{ url_for('auth.register') }}">{% trans %}Register{% endtrans %}</a>
+                <span style="margin-right: 1em">{{ _("or") }}</span>
+                <a class="btn btn-secondary" href="{{ url_for('auth.register') }}">{{ _("Register") }}</a>
             </div>
         </div>
     </form>

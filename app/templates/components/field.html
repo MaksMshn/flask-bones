@@ -1,30 +1,49 @@
 {% macro render_field(f) %}
     {% if f.type == 'BooleanField' %}
-        {{ render_checkbox_field(f) }}
+        {{ render_checkbox_field(f, **kwargs) }}
     {% elif f.type == 'RadioField' %}
-        {{ render_radio_field(f) }}
+        {{ render_radio_field(f, **kwargs) }}
+    {% elif f.type == 'FieldList' %}
+        {{ render_field_list(f, **kwargs) }}
+    {% elif f.type == "FileField" %}
+        {{ render_upload(f, **kwargs) }}
     {% else %}
-        {{ render_generic_field(f) }}
+        {{ render_generic_field(f, **kwargs) }}
     {% endif %}
+{% endmacro %}
+
+
+{# Renders field, correctly displaying errors
+    Params:
+        f - WTForm field
+        kwargs - pass any arguments you want in order to put them into the html attributes.
+        There are few exceptions: for - for_, class - class_, class__ - class_
+ #}
+{% macro display_errors(field) %}
+    {% set class="form-control " + kwargs.pop("class_") %}
+    {% with errors = field.errors %}
+        {% if errors %} 
+            {{ field(class_="is-invalid" + class, **kwargs)|safe }}
+            <div class="invalid-feedback">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ field(class_=class, **kwargs)|safe }} 
+        {% endif %}
+    {% endwith %}
 {% endmacro %}
 
 
 {% macro render_generic_field(field) %} 
     {% with errors = field.errors %}
         <div class="form-group">
-            {{ field.label(class="control-label") }} 
-            {% if errors %} 
-                {{ field(class_="form-control is-invalid", **kwargs)|safe }}
-                <div class="invalid-feedback">
-                    {% for error in errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% else %}
-                {{ field(class_="form-control", **kwargs)|safe }} 
-            {% endif %}
+            {{ field.label(class="form-control-label") }} 
+            {{ display_errors(field, **kwargs) }}
         </div>
-    {% endwith %} {% endmacro %}
+    {% endwith %} 
+{% endmacro %}
 
 
 {% macro render_checkbox_field(field) -%}
@@ -39,7 +58,38 @@
 </label>
 {%- endmacro %}
 
-{# Renders radio field
+
+{# Renders file upload
+
+    Params:
+        field - WTForm field
+        kwargs - pass any arguments you want in order to put them into the html attributes.
+        There are few exceptions: for - for_, class - class_, class__ - class_
+
+    Example usage:
+        {{ macros.render_upload(form.image) }}
+#}
+{% macro render_upload(field) -%}
+
+    <div class="form-group">
+        <div style="position:relative;">
+            <a class='btn btn-primary' href='javascript:;'>
+                {{ _("Choose File...") }}
+                {{ display_errors(field, style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;', 
+                onchange='$("#upload-file-info").html(" " + $(this).prop("files")[0]["name"]);',
+                size="40", class_="form-control-file", **kwargs) }}
+            </a>
+            <span>
+                <i class="fa fa-upload" aria-hidden="true" id="upload-file-info"></i>
+            </span>
+        </div>
+    </div>
+{%- endmacro %}
+
+
+{#  !! Warning, bootstrap 3
+
+    Renders radio field
     Params:
         field - WTForm field (there are no check, but you should put here only BooleanField.
         kwargs - pass any arguments you want in order to put them into the html attributes.
@@ -56,4 +106,75 @@
             </label>
         </div>
     {% endfor %}
+{%- endmacro %}
+
+
+{# !! Warning, bootstrap 3
+     Renders list field
+
+    Params:
+        field - WTForm field
+        kwargs - pass any arguments you want in order to put them into the html attributes.
+        There are few exceptions: for - for_, class - class_, class__ - class_
+
+    Example usage:
+        {{ macros.render_field_list(form.names, placeholder='Input email', type='email') }}
+#}
+{% macro render_field_list(field, label_visible=true) -%}
+
+    <script type="text/javascript">
+		$(function() {
+		    $(document).on('click', '.btn-add', function(e) {
+		        e.preventDefault();
+
+                var $input = $('.form-control[id^="synonyms-"]:last'),
+                    num = parseInt($input.prop("id").match(/\d+$/g), 10) + 1,
+                    synonym_id = "synonyms-" + num;
+
+		        var formGroup = $(this).parents('.form-group'),
+		            currentEntry = $(this).parents('.entry:first');
+                var newEntry = currentEntry.clone();
+                newEntry.children("input").prop({id: synonym_id, name: synonym_id});
+		        newEntry.appendTo(formGroup);
+
+		        newEntry.find('input').val('');
+		        formGroup.find('.entry:not(:last) .btn-add')
+		            .removeClass('btn-add').addClass('btn-remove')
+		            .removeClass('btn-success').addClass('btn-danger')
+		            .html('<span class="glyphicon glyphicon-minus"></span>');
+		    }).on('click', '.btn-remove', function(e) {
+		    	
+				$(this).parents('.entry:first').remove();
+                e.preventDefault();
+				return false;
+			});
+		});
+    </script>
+
+    <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
+        {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
+            <label for="{{ field.id }}" class="control-label">{{ field.label }}</label>
+        {% endif %}
+        {# add minus buttons for all but last field #}
+	    {% for sub_field in field[:-1] %}
+            <div class="entry input-group">
+		    	{{ sub_field(class_="form-control", **kwargs) }}
+                <span class="input-group-btn">
+                    <button class="btn btn-danger btn-remove" type="button">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                </span>
+            </div>
+	    {% endfor %}
+        {# add plus button for last field #}
+        {% set sub_field = field[-1] %}
+        <div class="entry input-group">
+            {{ sub_field(class_="form-control", **kwargs) }}
+            <span class="input-group-btn">
+                <button class="btn btn-success btn-add" type="button">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </span>
+        </div>
+    </div>
 {%- endmacro %}

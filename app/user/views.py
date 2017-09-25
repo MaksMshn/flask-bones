@@ -1,5 +1,5 @@
 from flask import request, redirect, url_for, render_template, flash, g
-from flask_babel import gettext
+from flask_babel import gettext as _
 from flask_login import login_required
 from app.user.models import User
 from .forms import EditUserForm
@@ -45,7 +45,7 @@ def edit(id):
         form.populate_obj(user)
         user.update()
         flash(
-            gettext('User {email} edited'.format(email=user.email)), 'success')
+            _('User {email} edited'.format(email=user.email)), 'success')
     return render_template('edit.html', form=form, user=user)
 
 
@@ -54,5 +54,5 @@ def edit(id):
 def delete(id):
     user = User.query.filter_by(id=id).first_or_404()
     user.delete()
-    flash(gettext('User {email} deleted').format(email=user.email), 'success')
+    flash(_('User {email} deleted').format(email=user.email), 'success')
     return redirect(url_for('.list'))
