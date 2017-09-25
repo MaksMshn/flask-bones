@@ -1,4 +1,8 @@
 {% set nav_links = [
+
+] %}
+
+{% set auth_links = [
     ('Users', 'user.list'),
 ] %}
 
@@ -17,9 +21,22 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                {% for title, endpoint in nav_links %} 
+                    {% if endpoint == request.endpoint %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ url_for(endpoint) }}">{{ title|title }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for(endpoint) }}">{{ title|title }}</a>
+                        </li>
+                    {% endif %} 
+                {% endfor %}
+            </ul>
             {% if current_user.is_admin -%}
                 <ul class="navbar-nav">
-                    {% for title, endpoint in nav_links %}
+                    {% for title, endpoint in auth_links %}
                         {% if endpoint == request.endpoint %}
                             <li class="nav-item active">
                                 <a class="nav-link" href="{{ url_for(endpoint) }}">{{ title|title }}</a>
